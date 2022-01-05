@@ -3,6 +3,14 @@
 function inti_template () {
 	add_theme_support( 'post-thumbnails' ); // permite que dentro de las páginas / entradas acepte una imagen destacada
 	add_theme_support( 'title-tag' );	// Permite agregar titulos para las páginas.
+
+	// agregar menu
+	register_nav_menus(
+		array(
+			'top_menu'	=> 'Menú Principal',
+			'second_menu' => 'Menú Secundario'
+		)
+	);
 }
 
 /*
