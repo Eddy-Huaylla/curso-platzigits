@@ -37,3 +37,26 @@ function assets(){
  hook wp_enqueue_scripts, agrega en el html los assets registrados.
 */
 add_action('wp_enqueue_scripts','assets');
+
+/*
+* ==============================================================================
+* Agregar witget
+* ==============================================================================
+*/
+function sidebar () {
+	register_sidebar(
+		array(
+			'name' => 'Pie de pagina',
+			'id' => 'footer',
+			'description' => 'Zona de Widgets para pie de pagina',
+			'before_title' => '<p>',
+			'after_title' => '</p>',
+			'before_widget' => '<div id="%1$s" class="%2$s">',
+			'after_widget'  => '</div>',
+		)
+	);
+}
+/*
+ hook widgets_init, agrega el html de widget registrados.
+*/
+add_action('widgets_init', 'sidebar');
