@@ -5,6 +5,7 @@
 			while(have_posts()){
 				the_post();
 				?>
+
 				<h1 class='my-5'><?php the_title() ?></h1>
 				<div class="row">
 					<div class="col-6">
@@ -14,7 +15,9 @@
 						<?php the_content(); ?>
 					</div>
 				</div>
-			<?php
+
+				<?php
+				get_template_part('template-parts/post', 'navegation');
 			}
 	} ?>
 
