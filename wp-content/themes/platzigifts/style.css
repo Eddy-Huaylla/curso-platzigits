@@ -58,14 +58,17 @@ footer p {
     color: #fff
 }
 
-.lista-productos h2 {
+.lista-productos h2,
+.productos-relacionados h2 {
     font-weight: 900
 }
 
-.lista-productos h4 {
+.lista-productos h4,
+.productos-relacionados h4 {
     font-weight: 400
 }
 
-.lista-productos h4 a {
+.lista-productos h4 a,
+.productos-relacionados h4 a {
     color: #000
 }
