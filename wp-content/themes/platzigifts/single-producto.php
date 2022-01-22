@@ -4,6 +4,10 @@
 	<?php if(have_posts()){
 			while(have_posts()){
 				the_post();
+
+				// obtener todas las taxonomias con referente al post y categoria
+				$taxonomy = get_the_terms($ID_producto_actual, 'categoria-productos');
+
 				?>
 
 				<h1 class='my-5'><?= the_title() ?></h1>
@@ -20,11 +24,19 @@
 				<?php
 				$ID_producto_actual = get_the_ID();
 				$args = array(
-				'post_type'       => 'producto',
-				'posts_per_page'  => 6,
-				'post__not_in'  => array($ID_producto_actual),
-				'order'           => 'ASC',
-				'orderby'         => 'title'
+					'post_type'      => 'producto',
+					'posts_per_page' => 6,
+					'post__not_in'   => array($ID_producto_actual),
+					'order'          => 'ASC',
+					'orderby'        => 'title',
+					'tax_query'		=> [
+						// indica que el query es para una taxonomia en particular
+						[
+							'taxonomy' => 'categoria-productos',
+							'field' => 'slug',
+							'terms' => $taxonomy[0]->slug
+						]
+					]
 				);
 				// En la siguiente variable se define el contenido
 				// que vamos a solicitar a la base de datos, a través
