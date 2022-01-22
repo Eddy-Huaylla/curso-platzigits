@@ -93,3 +93,36 @@ function productos_type(){
 }
 
 add_action('init', 'productos_type');
+
+/*
+* ==============================================================================
+* Registrar taxonomia personalizada
+* ==============================================================================
+*/
+
+function registrarTaxonimiaCP () {
+	$args = [
+		'hierarchical' => true,   // permitir orden girárquico o no. ejpl: categoria y sub categoria
+		'labels'       => [
+			'name'          => 'Categorias de Productos',
+			'singular_name' => 'Categoria de Productos'
+		],
+		'show_in_menu'      => true,   // mostrar en el menu de administración
+		'show_admin_column' => true,
+		'rewrite'           => [
+			// Permite especificar como será la ruta de categoria de productos
+			'slug' => 'categoria-productos',
+		]
+	];
+
+	register_taxonomy(
+		'categoria-productos',
+		[
+			// asignar a que posts type's pertenecerá esta taxonomia
+			'producto'
+		],
+		$args
+	);
+}
+
+add_action('init', 'registrarTaxonimiaCP');
