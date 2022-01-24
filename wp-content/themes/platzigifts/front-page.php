@@ -29,6 +29,7 @@
 				</select>
 			</div>
 		</div>
+
 		<div class="row" id="resultado-productos">
 			<?php
 			$args = array(
@@ -59,6 +60,14 @@
 			<?php }
 			}
 			?>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<h1>Novedades</h1>
+			</div>
+			<div class="row col-12" id="resultados-novedades">
+			</div>
 		</div>
 	</div>
 </main>

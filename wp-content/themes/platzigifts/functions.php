@@ -33,7 +33,11 @@ function assets(){
 	wp_enqueue_script('custom', get_template_directory_uri().'/assets/js/custom.js', '', '1.0', true);
 
 	// Agregar un dato a una variable de js. En este caso para la url de ajax
-	wp_localize_script('custom', '_PG', ['ajaxurl' => admin_url('admin-ajax.php')]);
+	// Agregar al variable js, la url de api.
+	wp_localize_script('custom', '_PG', [
+		'ajaxurl' => admin_url('admin-ajax.php'),
+		'apiurl'  => home_url('wp-json/pg/v1') // wp-json + datos del namespaces
+	]);
 
 }
 
@@ -187,7 +191,7 @@ add_action( "wp_ajax_pgFiltroProductosCategoria", "pgFiltroProductosCategoria" )
 
 function novedadesAPI () {
 	register_rest_route(
-		'pg/v1',
+		'pg/v1',	// namespaces
 		'/novedades/(?P<cantidad>\d+)', // d+ es expresión regular de solo números
 		[
 			'methods' => 'GET',
