@@ -29,7 +29,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="resultado-productos">
 			<?php
 			$args = array(
 				'post_type'     => 'producto',

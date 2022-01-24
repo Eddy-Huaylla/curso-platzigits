@@ -31,6 +31,10 @@ function assets(){
 	wp_register_script('popper','https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js','','1.16.0', true);
 	wp_enqueue_script('boostraps', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js', array('jquery','popper'),'4.4.1', true);
 	wp_enqueue_script('custom', get_template_directory_uri().'/assets/js/custom.js', '', '1.0', true);
+
+	// Agregar un dato a una variable de js. En este caso para la url de ajax
+	wp_localize_script('custom', '_PG', ['ajaxurl' => admin_url('admin-ajax.php')]);
+
 }
 
 /*
@@ -126,3 +130,50 @@ function registrarTaxonimiaCP () {
 }
 
 add_action('init', 'registrarTaxonimiaCP');
+
+/*
+* ==============================================================================
+* Registrar funcion a hoock de ajax
+* ==============================================================================
+*/
+function pgFiltroProductosCategoria () {
+	$return = [];
+
+	$args = array(
+		'post_type'      => 'producto',
+		'posts_per_page' => -1,
+		'order'          => 'ASC',
+		'orderby'        => 'title'
+	);
+
+	if($_POST['categoria']) {
+		$args['tax_query'] = [
+			// indica que el query es para una taxonomia en particular
+			[
+				'taxonomy' => 'categoria-productos',
+				'field' => 'slug',
+				'terms' => $_POST['categoria']
+			]
+		];
+	};
+
+	$productos = new WP_Query($args);
+
+	if($productos->have_posts()) {
+		while($productos->have_posts()) {
+			$productos->the_post();
+			$return[] = [
+				'image_con_elemento' => get_the_post_thumbnail( get_the_ID(), 'large' ),
+				'image' => get_the_post_thumbnail_url( get_the_ID(), 'large' ),
+				'link' => get_the_permalink(),
+				'title' => get_the_title()
+			];
+		}
+	}
+
+	wp_send_json( $return );
+}
+
+/* Agregar con login y sin login para acceso total a la acción */
+add_action( "wp_ajax_nopriv_pgFiltroProductosCategoria", "pgFiltroProductosCategoria" ); // para acceso con login
+add_action( "wp_ajax_pgFiltroProductosCategoria", "pgFiltroProductosCategoria" ); // para acceso sin login
