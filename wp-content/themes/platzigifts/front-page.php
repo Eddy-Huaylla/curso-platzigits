@@ -13,6 +13,23 @@
 	<div class="lista-productos my-5">
 		<h2 class='text-center'>PRODUCTOS</h2>
 		<div class="row">
+			<div class="col-12">
+				<select class="form-control" name="categorias-productos" id="categorias-productos">
+					<option value=""> Todas las categorias </option>
+
+					<?php
+					$terms = get_terms('categoria-productos', ['hide_empty' => true]);
+					foreach ($terms as $term) { ?>
+						<option value="<?= $term->slug; ?>">
+							<?= $term->name; ?>
+						</option>
+					<?php }
+					?>
+
+				</select>
+			</div>
+		</div>
+		<div class="row">
 			<?php
 			$args = array(
 				'post_type'     => 'producto',
