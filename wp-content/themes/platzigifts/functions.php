@@ -136,6 +136,7 @@ add_action('init', 'registrarTaxonimiaCP');
 * Registrar funcion a hoock de ajax
 * ==============================================================================
 */
+
 function pgFiltroProductosCategoria () {
 	$return = [];
 
@@ -177,3 +178,49 @@ function pgFiltroProductosCategoria () {
 /* Agregar con login y sin login para acceso total a la acción */
 add_action( "wp_ajax_nopriv_pgFiltroProductosCategoria", "pgFiltroProductosCategoria" ); // para acceso con login
 add_action( "wp_ajax_pgFiltroProductosCategoria", "pgFiltroProductosCategoria" ); // para acceso sin login
+
+/*
+* ==============================================================================
+* Registrar API en wp
+* ==============================================================================
+*/
+
+function novedadesAPI () {
+	register_rest_route(
+		'pg/v1',
+		'/novedades/(?P<cantidad>\d+)', // d+ es expresión regular de solo números
+		[
+			'methods' => 'GET',
+			'callback' => 'pedidoNovedades'
+		]
+	);
+}
+
+add_action('rest_api_init', 'novedadesAPI');
+
+function pedidoNovedades ( $data ) {
+	$return = [];
+
+	$args = array(
+		'post_type'      => 'post',
+		'posts_per_page' => $data['cantidad'],
+		'order'          => 'ASC',
+		'orderby'        => 'title'
+	);
+
+	$novedades = new WP_Query($args);
+
+	if($novedades->have_posts()) {
+		while($novedades->have_posts()) {
+			$novedades->the_post();
+			$return[] = [
+				'image_con_elemento' => get_the_post_thumbnail( get_the_ID(), 'large' ),
+				'image' => get_the_post_thumbnail_url( get_the_ID(), 'large' ),
+				'link' => get_the_permalink(),
+				'title' => get_the_title()
+			];
+		}
+	}
+
+	return $return;
+}
