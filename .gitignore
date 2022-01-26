@@ -1,0 +1,5 @@
+robots.txt
+wp-config.php
+.htaccess
+google*.html
+wp-content/themes/platzigifts/blocks/node_modules/*
