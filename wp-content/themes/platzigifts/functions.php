@@ -228,3 +228,20 @@ function pedidoNovedades ( $data ) {
 
 	return $return;
 }
+
+/*
+* ==============================================================================
+* Registrar bloque
+* ==============================================================================
+*/
+
+function pgRegisterBlock () {
+	$assets = include_once get_template_directory().'/blocks/build/index.asset.php';
+
+	wp_register_script( 'pg-block', get_template_directory_uri().'/blocks/build/index.js', $assets['dependencies'], $assets['version'] );
+
+	// pg/basic tiene que ser igual al js
+	register_block_type( 'pg/basic', [ 'editor_script' => 'pg-block' ] );
+}
+
+add_action( 'init', 'pgRegisterBlock' );
